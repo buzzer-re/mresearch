@@ -1,4 +1,4 @@
-# Domain network graph
+# Network graph
 
 
 This code is inspired in the [Malware Data Science](https://nostarch.com/malwaredatascience) book, and uses an [Bipartite Graph](https://en.wikipedia.org/wiki/Bipartite_graph) to build two sets, Domains and Samples, and the connect each one.

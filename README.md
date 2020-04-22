@@ -12,7 +12,7 @@ I'm currently using this books:
 
 
 Topics:
-- Building a bipartite graph of domains
+- [Building a bipartite graphs](bipartite_graph/README.md)
 - Soon...
 
 
