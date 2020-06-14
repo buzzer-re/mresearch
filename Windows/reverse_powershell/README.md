@@ -24,13 +24,13 @@ Topics i want to cover:
     - Generating our certificates
     - Boost our reverse tcp shell into a reverse ssl shell
 
-* Threat Analysis
+* Threat Analysis (part 2)
     - Threat overview
     - Modeling with STIX
     - Weaponization
     - Exploitation
     - Installing & C2
-* Detection
+* Detection (part 2)
     - Network analysis with Wireshark
     - Network analysis with Zeek
     - Writing Zeek rules to detect this kind of behavior
