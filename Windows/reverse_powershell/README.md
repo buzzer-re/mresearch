@@ -1,4 +1,6 @@
 # Remote shell: Write and Hunt (Part 1).
+Website post: [here](https://aandersonl.github.io/2020/06/14/reverse-shells-write-and-hunt-part-1/)
+
 
 A shell, its probably the goal of every security researcher, almost every critical flaws or 0-Day exploits give us a way to run a remote command inside a system (RCE - Remote Code Execution). 
 
